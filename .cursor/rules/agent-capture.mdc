@@ -1,0 +1,10 @@
+---
+description: Automatic agent capture is installed; do not manually edit session logs
+alwaysApply: true
+---
+
+# Agent capture
+
+Prompt/response capture is automatic via Cursor hooks in `.cursor/hooks.json`. The hook script is `.cursor/hooks/capture.py`.
+
+Do not edit, tidy, summarise, or delete entries in `.agent-logs/` after they are written. Do not add `.agent-logs/` to `.gitignore`.
