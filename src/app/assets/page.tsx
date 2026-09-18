@@ -1,10 +1,5 @@
-import { RoutePlaceholder } from "@/components/shell/RoutePlaceholder";
+import { AssetsView } from "@/components/assets/AssetsView";
 
 export default function AssetsPage() {
-  return (
-    <RoutePlaceholder
-      title="Assets"
-      description="Generated content history will be implemented in a later phase."
-    />
-  );
+  return <AssetsView />;
 }

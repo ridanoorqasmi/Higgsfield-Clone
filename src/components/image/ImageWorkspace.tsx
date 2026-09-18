@@ -8,6 +8,7 @@ import type {
   QualityId,
   ResolutionId,
 } from "@/lib/image-options";
+import { saveGenerationFromResult } from "@/lib/assets";
 import {
   generateImages,
   type GeneratedImage,
@@ -61,6 +62,7 @@ export function ImageWorkspace() {
       setResults(result.images);
       setResultPrompt(result.prompt);
       setResultAspect(result.request.aspectRatio);
+      saveGenerationFromResult(result);
       setStatus("success");
     } catch (error) {
       const message =
