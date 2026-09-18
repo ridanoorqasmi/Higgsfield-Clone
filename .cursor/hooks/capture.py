@@ -307,7 +307,7 @@ def format_entry(
 
 def append_prompt(path: Path, session_id: str, timestamp: str, model: str, prompt: str) -> int:
     text = path.read_text(encoding="utf-8")
-    num = max_entry_num(text, "PROMPT") + 1
+    num = max(max_entry_num(text, "PROMPT"), max_entry_num(text, "RESPONSE")) + 1
     block = format_entry("PROMPT", num, session_id, timestamp, model, prompt)
     path.write_text(text.rstrip() + "\n\n" + block + "\n", encoding="utf-8", newline="\n")
     rewrite_frontmatter(
@@ -335,9 +335,14 @@ def upsert_response(
         if num < 1:
             num = 1
     short = session_short(session_id)
-    marker = f"[LOG_ENTRY type=RESPONSE num={num} session={short}]"
+    prompt_marker = f"[LOG_ENTRY type=PROMPT num={num} session={short}]"
+    response_marker = f"[LOG_ENTRY type=RESPONSE num={num} session={short}]"
     block = format_entry("RESPONSE", num, session_id, timestamp, model, body)
-    idx = text.find(marker)
+    prompt_idx = text.rfind(prompt_marker)
+    search_from = prompt_idx if prompt_idx != -1 else 0
+    idx = text.find(response_marker, search_from)
+    if prompt_idx != -1 and idx != -1 and idx < prompt_idx:
+        idx = -1
     if idx == -1:
         path.write_text(text.rstrip() + "\n\n" + block + "\n", encoding="utf-8", newline="\n")
     else:
