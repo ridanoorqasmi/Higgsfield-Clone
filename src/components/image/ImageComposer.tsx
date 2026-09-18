@@ -31,6 +31,9 @@ type ImageComposerProps = {
   onModeChange: (value: ModeId) => void;
   outputCount: number;
   onOutputCountChange: (value: number) => void;
+  canGenerate: boolean;
+  isGenerating: boolean;
+  onGenerate: () => void;
 };
 
 function PlusIcon() {
@@ -105,9 +108,13 @@ export function ImageComposer({
   onModeChange,
   outputCount,
   onOutputCountChange,
+  canGenerate,
+  isGenerating,
+  onGenerate,
 }: ImageComposerProps) {
   const selectedModel = IMAGE_MODELS.find((item) => item.id === model) ?? IMAGE_MODELS[0];
   const selectedAspect = ASPECT_RATIOS.find((item) => item.id === aspectRatio) ?? ASPECT_RATIOS[0];
+  const generateDisabled = !canGenerate || isGenerating;
 
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 flex justify-center px-3 pb-4 sm:px-5 sm:pb-6">
@@ -216,16 +223,27 @@ export function ImageComposer({
             </p>
             <button
               type="button"
-              disabled
-              title="Generation will be enabled in a later phase"
-              className="inline-flex h-10 min-w-[132px] items-center justify-center gap-2 rounded-full bg-hf-accent px-5 text-[14px] font-semibold text-hf-accent-text opacity-80"
+              disabled={generateDisabled}
+              onClick={onGenerate}
+              title={
+                isGenerating
+                  ? "Generation in progress"
+                  : prompt.trim().length === 0
+                    ? "Enter a prompt to generate"
+                    : "Generate images"
+              }
+              className={[
+                "inline-flex h-10 min-w-[132px] items-center justify-center gap-2 rounded-full bg-hf-accent px-5 text-[14px] font-semibold text-hf-accent-text transition-opacity",
+                generateDisabled ? "cursor-not-allowed opacity-45" : "hover:bg-hf-accent-hover",
+              ].join(" ")}
             >
-              <span>Generate</span>
-              <span className="flex items-center gap-1 text-[12px] font-medium opacity-80">
-                <SparkIcon />
-                <span className="line-through opacity-60">8.5</span>
-                <span>6.5</span>
-              </span>
+              <span>{isGenerating ? "Generating…" : "Generate"}</span>
+              {!isGenerating ? (
+                <span className="flex items-center gap-1 text-[12px] font-medium opacity-80">
+                  <SparkIcon />
+                  <span>6.5</span>
+                </span>
+              ) : null}
             </button>
           </div>
         </div>
