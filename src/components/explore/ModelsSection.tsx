@@ -24,6 +24,7 @@ export function ModelsSection() {
               alt={tool.title}
               objectPosition={tool.objectPosition}
               className="rounded-lg border-hf-border-light"
+              sizes="96px"
             />
           </div>
           <div className="min-w-0 flex-1">

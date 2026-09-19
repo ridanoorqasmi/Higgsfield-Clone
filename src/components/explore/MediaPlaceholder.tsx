@@ -11,6 +11,7 @@ type MediaPlaceholderProps = {
   className?: string;
   fill?: boolean;
   objectPosition?: string;
+  sizes?: string;
 };
 
 function isVideoSrc(src: string): boolean {
@@ -36,6 +37,7 @@ export function MediaPlaceholder({
   className = "",
   fill = false,
   objectPosition,
+  sizes = "(max-width: 768px) 50vw, 320px",
 }: MediaPlaceholderProps) {
   const aspectClass = fill ? "h-full w-full" : ASPECT_CLASS[aspectRatio];
 
@@ -67,7 +69,7 @@ export function MediaPlaceholder({
             fill
             className="object-cover"
             style={objectPosition ? { objectPosition } : undefined}
-            sizes="(max-width: 768px) 50vw, 320px"
+            sizes={sizes}
           />
         )
       ) : (
