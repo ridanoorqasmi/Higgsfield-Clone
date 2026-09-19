@@ -2,28 +2,32 @@ import Image from "next/image";
 
 const PREVIEW_CARDS = [
   {
-    src: "/ui/previews/card-1.jpg",
-    alt: "Cinematic preview of a musician playing trumpet",
+    src: "/ui/image-hero/media-1.jpg",
+    alt: "Preview of a couple watching a film",
     rotate: "-rotate-[8deg]",
     zIndex: "z-10",
+    objectPosition: "center 28%",
   },
   {
-    src: "/ui/previews/card-2.jpg",
-    alt: "Cinematic preview of a couple in warm light",
+    src: "/ui/image-hero/media-2.jpg",
+    alt: "Preview of a soccer player on the field",
     rotate: "-rotate-[3deg]",
     zIndex: "z-20",
+    objectPosition: "center 40%",
   },
   {
-    src: "/ui/previews/card-3.jpg",
-    alt: "Cinematic preview of a person on the phone",
+    src: "/ui/image-hero/media-3.jpg",
+    alt: "Preview of a guitar in colored light",
     rotate: "rotate-[2deg]",
     zIndex: "z-30",
+    objectPosition: "center",
   },
   {
-    src: "/ui/previews/card-4.jpg",
-    alt: "Cinematic preview of a person laughing",
+    src: "/ui/image-hero/media-4.jpg",
+    alt: "Preview of a portrait in warm light",
     rotate: "rotate-[7deg]",
     zIndex: "z-40",
+    objectPosition: "center 22%",
   },
 ] as const;
 
@@ -48,6 +52,7 @@ export function ImageEmptyState() {
               fill
               sizes="84px"
               className="object-cover"
+              style={{ objectPosition: card.objectPosition }}
               priority
             />
           </div>

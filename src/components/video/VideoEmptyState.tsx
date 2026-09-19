@@ -37,7 +37,7 @@ export function VideoEmptyState({ onAddImage }: VideoEmptyStateProps) {
         <div>
           <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-hf-border">
             <Image
-              src="/ui/previews/card-2.jpg"
+              src="/ui/video-empty/preset.jpg"
               alt=""
               fill
               sizes="280px"
@@ -51,12 +51,13 @@ export function VideoEmptyState({ onAddImage }: VideoEmptyStateProps) {
 
         <div>
           <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-hf-border">
-            <Image
-              src="/ui/previews/card-4.jpg"
-              alt=""
-              fill
-              sizes="280px"
-              className="object-cover"
+            <video
+              src="/ui/video-empty/video.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
           <p className="mt-3 text-center text-[13px] font-medium uppercase tracking-wide text-hf-muted">
