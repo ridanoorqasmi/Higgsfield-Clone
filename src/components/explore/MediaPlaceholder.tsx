@@ -10,7 +10,12 @@ type MediaPlaceholderProps = {
   overlayLabel?: string;
   className?: string;
   fill?: boolean;
+  objectPosition?: string;
 };
+
+function isVideoSrc(src: string): boolean {
+  return /\.(mp4|webm|mov)(\?|#|$)/i.test(src);
+}
 
 const ASPECT_CLASS: Record<ExploreAspectRatio, string> = {
   "16/9": "aspect-video",
@@ -30,6 +35,7 @@ export function MediaPlaceholder({
   overlayLabel,
   className = "",
   fill = false,
+  objectPosition,
 }: MediaPlaceholderProps) {
   const aspectClass = fill ? "h-full w-full" : ASPECT_CLASS[aspectRatio];
 
@@ -42,7 +48,28 @@ export function MediaPlaceholder({
       ].join(" ")}
     >
       {mediaSrc ? (
-        <Image src={mediaSrc} alt={alt} fill className="object-cover" sizes="(max-width: 768px) 50vw, 320px" />
+        isVideoSrc(mediaSrc) ? (
+          <video
+            src={mediaSrc}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-label={alt}
+            className="absolute inset-0 h-full w-full object-cover"
+            style={objectPosition ? { objectPosition } : undefined}
+          />
+        ) : (
+          <Image
+            src={mediaSrc}
+            alt={alt}
+            fill
+            className="object-cover"
+            style={objectPosition ? { objectPosition } : undefined}
+            sizes="(max-width: 768px) 50vw, 320px"
+          />
+        )
       ) : (
         <div className="absolute inset-0 bg-[linear-gradient(145deg,#1a1a1a_0%,#111111_45%,#1f1f1f_100%)]">
           <div

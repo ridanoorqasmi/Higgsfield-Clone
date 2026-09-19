@@ -30,6 +30,7 @@ export type ModelTool = {
   href: ExploreRoute;
   badge?: "TOP" | "FREE" | "NEW";
   mediaType: "image" | "video";
+  objectPosition?: string;
 };
 
 export type ExploreSection = {

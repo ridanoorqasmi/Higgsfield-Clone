@@ -22,6 +22,7 @@ export function ModelsSection() {
               mediaSrc={tool.mediaSrc}
               aspectRatio="1/1"
               alt={tool.title}
+              objectPosition={tool.objectPosition}
               className="rounded-lg border-hf-border-light"
             />
           </div>
