@@ -1,4 +1,5 @@
 import { generateFluxImage } from "@/lib/generation/cloudflare-flux";
+import { mapGenerationToFlux } from "@/lib/generation/flux-mapping";
 import type { GenerationResult } from "@/lib/generation";
 import { parseGenerationRequest } from "@/lib/generation/validate";
 
@@ -23,9 +24,10 @@ export async function POST(request: Request) {
   }
 
   try {
+    const fluxParams = mapGenerationToFlux(parsed.request);
     const images = [];
     for (let index = 0; index < parsed.request.count; index += 1) {
-      const image = await generateFluxImage(parsed.request.prompt);
+      const image = await generateFluxImage(fluxParams);
       images.push({
         id: image.id,
         url: image.url,

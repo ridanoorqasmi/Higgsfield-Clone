@@ -1,4 +1,4 @@
-const FLUX_MODEL = "@cf/black-forest-labs/flux-1-schnell";
+import { FLUX_MODEL_ID, type FluxGenerationParams } from "./flux-mapping";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -22,7 +22,7 @@ function createImageId(): string {
   return `img-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
-export async function generateFluxImage(prompt: string): Promise<{
+export async function generateFluxImage(params: FluxGenerationParams): Promise<{
   id: string;
   url: string;
 }> {
@@ -34,14 +34,17 @@ export async function generateFluxImage(prompt: string): Promise<{
   }
 
   const response = await fetch(
-    `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/${FLUX_MODEL}`,
+    `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/${FLUX_MODEL_ID}`,
     {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiToken}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ prompt }),
+      body: JSON.stringify({
+        prompt: params.prompt,
+        steps: params.steps,
+      }),
     },
   );
 

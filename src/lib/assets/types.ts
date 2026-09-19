@@ -1,9 +1,9 @@
 import type {
   AspectRatioId,
-  ImageModelId,
   ModeId,
   QualityId,
-  ResolutionId,
+  StoredImageModelId,
+  StoredResolutionId,
 } from "@/lib/image-options";
 
 export type GenerationType = "image";
@@ -11,7 +11,7 @@ export type GenerationType = "image";
 export type GenerationSettings = {
   aspectRatio: AspectRatioId;
   quality: QualityId;
-  resolution: ResolutionId;
+  resolution: StoredResolutionId;
   mode: ModeId;
 };
 
@@ -24,7 +24,7 @@ export type Generation = {
   id: string;
   type: GenerationType;
   prompt: string;
-  model: ImageModelId;
+  model: StoredImageModelId;
   createdAt: string;
   settings: GenerationSettings;
   outputs: GenerationOutput[];

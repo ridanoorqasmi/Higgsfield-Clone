@@ -4,11 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { readGenerations, type Generation } from "@/lib/assets";
-import { IMAGE_MODELS } from "@/lib/image-options";
-
-function modelLabel(modelId: string): string {
-  return IMAGE_MODELS.find((item) => item.id === modelId)?.label ?? modelId;
-}
+import { getModelLabel } from "@/lib/image-options";
 
 function formatCreatedAt(iso: string): string {
   const date = new Date(iso);
@@ -33,8 +29,23 @@ export function AssetsView() {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    setGenerations(readGenerations());
-    setLoaded(true);
+    let cancelled = false;
+
+    async function load() {
+      try {
+        const items = await readGenerations();
+        if (!cancelled) setGenerations(items);
+      } catch {
+        if (!cancelled) setGenerations([]);
+      } finally {
+        if (!cancelled) setLoaded(true);
+      }
+    }
+
+    void load();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   if (!loaded) {
@@ -83,7 +94,7 @@ export function AssetsView() {
                   {generation.prompt}
                 </p>
                 <p className="mt-1 text-[12px] text-hf-muted">
-                  {modelLabel(generation.model)} · {formatCreatedAt(generation.createdAt)} ·{" "}
+                  {getModelLabel(generation.model)} · {formatCreatedAt(generation.createdAt)} ·{" "}
                   {generation.outputs.length} output
                   {generation.outputs.length === 1 ? "" : "s"}
                 </p>

@@ -1,21 +1,29 @@
 import {
   ASPECT_RATIOS,
   IMAGE_MODELS,
+  LEGACY_IMAGE_MODELS,
+  LEGACY_RESOLUTION_IDS,
   MODE_OPTIONS,
   QUALITY_OPTIONS,
   RESOLUTION_OPTIONS,
   type AspectRatioId,
-  type ImageModelId,
   type ModeId,
   type QualityId,
-  type ResolutionId,
+  type StoredImageModelId,
+  type StoredResolutionId,
 } from "@/lib/image-options";
 import type { Generation, GenerationOutput, GenerationSettings } from "./types";
 
-const MODEL_IDS = new Set<string>(IMAGE_MODELS.map((item) => item.id));
+const MODEL_IDS = new Set<string>([
+  ...IMAGE_MODELS.map((item) => item.id),
+  ...LEGACY_IMAGE_MODELS.map((item) => item.id),
+]);
 const ASPECT_IDS = new Set<string>(ASPECT_RATIOS.map((item) => item.id));
 const QUALITY_IDS = new Set<string>(QUALITY_OPTIONS.map((item) => item.id));
-const RESOLUTION_IDS = new Set<string>(RESOLUTION_OPTIONS.map((item) => item.id));
+const RESOLUTION_IDS = new Set<string>([
+  ...RESOLUTION_OPTIONS.map((item) => item.id),
+  ...LEGACY_RESOLUTION_IDS,
+]);
 const MODE_IDS = new Set<string>(MODE_OPTIONS.map((item) => item.id));
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -53,7 +61,7 @@ function parseSettings(value: unknown): GenerationSettings | null {
   return {
     aspectRatio: aspectRatio as AspectRatioId,
     quality: quality as QualityId,
-    resolution: resolution as ResolutionId,
+    resolution: resolution as StoredResolutionId,
     mode: mode as ModeId,
   };
 }
@@ -78,7 +86,7 @@ export function parseGeneration(value: unknown): Generation | null {
     id: value.id,
     type: "image",
     prompt: value.prompt,
-    model: value.model as ImageModelId,
+    model: value.model as StoredImageModelId,
     createdAt: value.createdAt,
     settings,
     outputs,

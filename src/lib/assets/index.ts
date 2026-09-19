@@ -1,6 +1,8 @@
 export {
   appendGeneration,
+  AssetsPersistenceError,
   generationFromResult,
+  mergeGenerationsForMigration,
   readGenerations,
   saveGenerationFromResult,
   writeGenerations,

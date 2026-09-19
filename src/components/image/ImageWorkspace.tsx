@@ -8,7 +8,7 @@ import type {
   QualityId,
   ResolutionId,
 } from "@/lib/image-options";
-import { saveGenerationFromResult } from "@/lib/assets";
+import { AssetsPersistenceError, saveGenerationFromResult } from "@/lib/assets";
 import {
   generateImages,
   type GeneratedImage,
@@ -21,10 +21,10 @@ import { ImageResults } from "./ImageResults";
 
 export function ImageWorkspace() {
   const [prompt, setPrompt] = useState("");
-  const [model, setModel] = useState<ImageModelId>("gpt-image-2");
+  const [model, setModel] = useState<ImageModelId>("flux-1-schnell");
   const [aspectRatio, setAspectRatio] = useState<AspectRatioId>("auto");
   const [quality, setQuality] = useState<QualityId>("high");
-  const [resolution, setResolution] = useState<ResolutionId>("2k");
+  const [resolution, setResolution] = useState<ResolutionId>("1k");
   const [mode, setMode] = useState<ModeId>("auto");
   const [outputCount, setOutputCount] = useState(1);
 
@@ -62,8 +62,17 @@ export function ImageWorkspace() {
       setResults(result.images);
       setResultPrompt(result.prompt);
       setResultAspect(result.request.aspectRatio);
-      saveGenerationFromResult(result);
       setStatus("success");
+
+      try {
+        await saveGenerationFromResult(result);
+      } catch (error) {
+        const message =
+          error instanceof AssetsPersistenceError
+            ? error.message
+            : "Generated successfully, but could not save to Assets. Local storage is unavailable.";
+        setErrorMessage(message);
+      }
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Generation failed. Please try again.";
