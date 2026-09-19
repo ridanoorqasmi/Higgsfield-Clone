@@ -1,10 +1,5 @@
-import { RoutePlaceholder } from "@/components/shell/RoutePlaceholder";
+import { VideoWorkspace } from "@/components/video/VideoWorkspace";
 
 export default function VideoPage() {
-  return (
-    <RoutePlaceholder
-      title="Video"
-      description="Video generation workflow will be implemented in a later phase."
-    />
-  );
+  return <VideoWorkspace />;
 }
