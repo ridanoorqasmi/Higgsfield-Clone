@@ -40,6 +40,7 @@ export function ImageResults({ images, aspectRatio, prompt }: ImageResultsProps)
               src={image.url}
               alt={image.alt}
               fill
+              unoptimized={image.url.startsWith("data:")}
               sizes="(max-width: 640px) 90vw, 384px"
               className="object-cover"
             />

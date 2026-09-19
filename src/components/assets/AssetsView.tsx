@@ -104,6 +104,7 @@ export function AssetsView() {
                     src={output.url}
                     alt={`${generation.prompt} output`}
                     fill
+                    unoptimized={output.url.startsWith("data:")}
                     sizes="(max-width: 640px) 45vw, 220px"
                     className="object-cover"
                   />
